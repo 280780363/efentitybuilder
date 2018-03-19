@@ -31,7 +31,7 @@ namespace Generator
                 var files = Directory.EnumerateFiles(Constant.BasePath, "config.json", SearchOption.AllDirectories);
                 foreach (var item in files)
                 {
-                    var config = JsonExtensions.DeserializeFromFile<Config>(item);
+                    var config = JsonHelper.DeserializeFromFile<Config>(item);
                     if (!config.Name.IsNullOrWhiteSpace())
                         cbxProviders.Items.Add(config.Name);
                 }
@@ -40,9 +40,9 @@ namespace Generator
                     txtConnString.Text = LastDataConfiguration.Instance.Get("ConnectionString");
 
                 if (!LastDataConfiguration.Instance.Get("DbProvider").IsNullOrWhiteSpace())
-                    cbxProviders.SelectedText = LastDataConfiguration.Instance.Get("DbProvider");
+                    cbxProviders.SelectedItem = LastDataConfiguration.Instance.Get("DbProvider");
                 else
-                    cbxProviders.SelectedText = "mysql";
+                    cbxProviders.SelectedItem = "mysql";
 
                 Constant.SwtichProvider("mysql");
             }
@@ -54,7 +54,7 @@ namespace Generator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Constant.SwtichProvider(cbxProviders.SelectedText);
+            Constant.SwtichProvider(cbxProviders.SelectedItem.ToString());
             using (var conn = Factory.DbProvider().Connection(txtConnString.Text))
             {
                 try
@@ -67,7 +67,7 @@ namespace Generator
                 }
             }
             LastDataConfiguration.Instance.Set("ConnectionString", txtConnString.Text);
-            LastDataConfiguration.Instance.Set("DbProvider", cbxProviders.SelectedText);
+            LastDataConfiguration.Instance.Set("DbProvider", cbxProviders.SelectedItem.ToString());
             LastDataConfiguration.Instance.Save();
             new Main(selectedProject, txtConnString.Text).Show();
             this.Close();

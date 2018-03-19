@@ -12,14 +12,16 @@ namespace Generator.Common
     {
         static Constant()
         {
-            BasePath = Path.Combine(System.Environment.GetEnvironmentVariable("AppData"), @"Local\efcore.entity.generator\Config");
+            BasePath = Path.Combine(System.Environment.GetEnvironmentVariable("AppData"), @"efcore.entity.generator\Config");
+            if (!Directory.Exists(BasePath))
+                Directory.CreateDirectory(BasePath);
         }
 
         /// <summary>
         /// 程序基础路径
         /// </summary>
         public static string BasePath { get; }
-        public static string ConfigFile { get { return Path.Combine(CurrentProvider, "config.json"); } }
+        public static string ConfigFile { get { return Path.Combine(BasePath, CurrentProvider, "config.json"); } }
         public static string EntityTemplateFile { get { return Path.Combine(BasePath, "entity.template"); } }
         public static string ContextTemplateFile { get { return Path.Combine(BasePath, "context.template"); } }
         public static string EntityConfigTemplateFile { get { return Path.Combine(BasePath, "entity.config.template"); } }

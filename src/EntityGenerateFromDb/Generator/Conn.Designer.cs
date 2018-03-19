@@ -43,7 +43,9 @@
             // 
             // cbxProviders
             // 
+            this.cbxProviders.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxProviders.FormattingEnabled = true;
+            this.cbxProviders.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.cbxProviders.Location = new System.Drawing.Point(22, 24);
             this.cbxProviders.Name = "cbxProviders";
             this.cbxProviders.Size = new System.Drawing.Size(126, 20);

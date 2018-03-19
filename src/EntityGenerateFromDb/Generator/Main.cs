@@ -27,21 +27,17 @@ namespace Generator
 
 
         All all;
-        private async void Main_Load(object sender, EventArgs e)
+        private void Main_Load(object sender, EventArgs e)
         {
-            await Task.Run(() =>
-             {
-                 using (var conn = Factory.DbProvider().Connection(connString))
-                 {
-                     this.Text = $"{this.Text}[{Constant.CurrentProvider}:{conn.Database}]";
-                     all = Factory.QueryProvider().GetAll(conn);
-
-                     foreach (var item in all.Tables)
-                     {
-                         cbxlTables.Items.Add(item.Name);
-                     }
-                 }
-             });
+            using (var conn = Factory.DbProvider().Connection(connString))
+            {
+                this.Text = $"{this.Text}[{Constant.CurrentProvider}:{conn.Database}]";
+                all = Factory.QueryProvider().GetAll(conn);
+                foreach (var item in all.Tables)
+                {
+                    cbxlTables.Items.Add(item.Name);
+                }
+            }
         }
     }
 }

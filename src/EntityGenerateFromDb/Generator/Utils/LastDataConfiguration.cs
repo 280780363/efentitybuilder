@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Generator.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +18,7 @@ namespace Generator.Utils
         private static string _lastDataFile;
         static LastDataConfiguration()
         {
-            var basepath = Path.GetDirectoryName(typeof(LastDataConfiguration).Assembly.Location);
+            var basepath = Constant.BasePath;
 
             _lastDataFile = Path.Combine(basepath, "lastdata.json");
 

@@ -21,7 +21,7 @@ namespace Generator.Core
             if (!File.Exists(Constant.ConfigFile))
                 throw new Exception($"找不到配置文件:{Constant.ConfigFile}");
 
-            var config = JsonExtensions.DeserializeFromFile<Config>(Constant.ConfigFile);
+            var config = JsonHelper.DeserializeFromFile<Config>(Constant.ConfigFile);
             if (config.ConnectionType.IsNullOrWhiteSpace())
                 throw new Exception($"配置ConnectionType不能为空");
 
