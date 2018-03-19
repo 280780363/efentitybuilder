@@ -87,6 +87,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Conn";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "连接数据库";
             this.Load += new System.EventHandler(this.Conn_Load);
             this.ResumeLayout(false);

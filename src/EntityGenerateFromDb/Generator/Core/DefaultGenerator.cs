@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Generator.Common;
 using Generator.Models;
-using Lazy.Utilities.Extensions;
+using Generator.Utils;
 namespace Generator.Core
 {
     public class DefaultGenerator : IGenerator

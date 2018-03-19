@@ -37,7 +37,7 @@
          must be a menu. -->
     <Groups>
       <Group guid="guidGeneratePackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
+        <Parent guid="右键菜单" id="项目右键" />
       </Group>
     </Groups>
 
@@ -54,9 +54,9 @@
           If you do not want an image next to your command, remove the Icon node /> -->
       <Button guid="guidGeneratePackageCmdSet" id="GenerateId" priority="0x0100" type="Button">
         <Parent guid="guidGeneratePackageCmdSet" id="MyMenuGroup" />
-        <Icon guid="guidImages" id="bmpPic1" />
+        <Icon guid="右键图标" id="icon1" />
         <Strings>
-          <ButtonText>Invoke Generate</ButtonText>
+          <ButtonText>Issue nuget package</ButtonText>
         </Strings>
       </Button>
 
@@ -80,27 +80,26 @@
             bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
             inside a button definition. An important aspect of this declaration is that the element id
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
-      <Bitmap guid="guidImages" href="Resources\Generate.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough"/>
+      <Bitmap guid="右键图标" href="Resources\Alien_16px_1177037_easyicon.net.ico" usedList="icon1" />
     </Bitmaps>
   </Commands>
 
   <Symbols>
     <!-- This is the package guid. -->
     <GuidSymbol name="guidGeneratePackage" value="{4fce3c5e-451d-4794-aee5-520bcc98e185}" />
-
+    <!--定义右键标识,右键id为:D309F791-903F-11D0-9EFC-00A0C911004F-->
+    <GuidSymbol name="右键菜单" value="{D309F791-903F-11D0-9EFC-00A0C911004F}">
+      <IDSymbol name="项目右键" value="1026" />
+    </GuidSymbol>
     <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidGeneratePackageCmdSet" value="{dea6641c-ffac-411f-b490-ada0b2af3fe5}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="GenerateId" value="0x0100" />
     </GuidSymbol>
 
-    <GuidSymbol name="guidImages" value="{aace25b2-c285-4bd9-8e4f-947a9409b1c9}" >
-      <IDSymbol name="bmpPic1" value="1" />
-      <IDSymbol name="bmpPic2" value="2" />
-      <IDSymbol name="bmpPicSearch" value="3" />
-      <IDSymbol name="bmpPicX" value="4" />
-      <IDSymbol name="bmpPicArrows" value="5" />
-      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    <!--定义图标标识-->
+    <GuidSymbol name="右键图标" value="{C1EC3664-0A04-4A27-9486-A4A064C4D59F}">
+      <IDSymbol name="icon1" value="1" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

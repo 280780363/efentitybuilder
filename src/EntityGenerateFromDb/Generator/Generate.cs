@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Globalization;
+using System.Windows.Forms;
+using EnvDTE;
+using Generator.Utils;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -31,15 +34,18 @@ namespace Generator
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        private Generate(Package package) {
-            if (package == null) {
+        private Generate(Package package)
+        {
+            if (package == null)
+            {
                 throw new ArgumentNullException("package");
             }
 
             this.package = package;
 
             OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if (commandService != null) {
+            if (commandService != null)
+            {
                 var menuCommandID = new CommandID(CommandSet, CommandId);
                 var menuItem = new MenuCommand(this.MenuItemCallback, menuCommandID);
                 commandService.AddCommand(menuItem);
@@ -49,7 +55,8 @@ namespace Generator
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static Generate Instance {
+        public static Generate Instance
+        {
             get;
             private set;
         }
@@ -57,8 +64,10 @@ namespace Generator
         /// <summary>
         /// Gets the service provider from the owner package.
         /// </summary>
-        private IServiceProvider ServiceProvider {
-            get {
+        private IServiceProvider ServiceProvider
+        {
+            get
+            {
                 return this.package;
             }
         }
@@ -67,7 +76,8 @@ namespace Generator
         /// Initializes the singleton instance of the command.
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        public static void Initialize(Package package) {
+        public static void Initialize(Package package)
+        {
             Instance = new Generate(package);
         }
 
@@ -78,18 +88,26 @@ namespace Generator
         /// </summary>
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
-        private void MenuItemCallback(object sender, EventArgs e) {
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "Generate";
+        private void MenuItemCallback(object sender, EventArgs e)
+        {
+            var dte = (DTE)this.ServiceProvider.GetService(typeof(SDTE));
 
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.ServiceProvider,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            if (dte == null)
+            {
+
+                this.ServiceProvider.Show("获取当前项目信息DTE接口错误");
+                return;
+            }
+
+            if (!dte.IsSelectedOnlyOne())
+            {
+                this.ServiceProvider.Show("您只能选择一个项目进行操作");
+                return;
+            }
+
+
+            SelectedProject s = new SelectedProject(dte, this.ServiceProvider); ;
+            new Conn(s).Show();
         }
     }
 }

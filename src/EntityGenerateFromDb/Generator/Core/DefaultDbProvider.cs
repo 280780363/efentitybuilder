@@ -1,6 +1,6 @@
 ﻿using Generator.Common;
 using Generator.Models;
-using Lazy.Utilities.Extensions;
+using Generator.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,7 +14,8 @@ namespace Generator.Core
 {
     public class DefaultDbProvider : IDbProvider
     {
-        public IDbConnection Connection(string connectionString) {
+        public IDbConnection Connection(string connectionString)
+        {
 
 
             if (!File.Exists(Constant.ConfigFile))
@@ -25,7 +26,8 @@ namespace Generator.Core
                 throw new Exception($"配置ConnectionType不能为空");
 
             Type connType;
-            if (!config.ProviderAssembly.IsNullOrWhiteSpace()) {
+            if (!config.ProviderAssembly.IsNullOrWhiteSpace())
+            {
                 var dll = Directory.GetFiles(Constant.CurrentProviderPath, "*.dll")?.FirstOrDefault();
                 if (dll.IsNullOrWhiteSpace())
                     throw new Exception($"{Constant.CurrentProviderPath}:找不到数据库连接提供程序!");
@@ -33,7 +35,8 @@ namespace Generator.Core
 
                 connType = ass.ExportedTypes.FirstOrDefault(r => !r.IsAbstract && r.IsClass && r.IsChildTypeOf<IDbConnection>());
             }
-            else {
+            else
+            {
                 connType = Type.GetType(config.ConnectionType);
             }
 

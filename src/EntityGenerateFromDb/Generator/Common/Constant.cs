@@ -8,39 +8,58 @@ using System.Threading.Tasks;
 
 namespace Generator.Common
 {
-    public class Constant
+    public static class Constant
     {
+        static Constant()
+        {
+            BasePath = Path.Combine(System.Environment.GetEnvironmentVariable("AppData"), @"Local\efcore.entity.generator\Config");
+        }
+
         /// <summary>
         /// 程序基础路径
         /// </summary>
-        public static readonly string BasePath = Path.Combine(Assembly.GetExecutingAssembly().Location, "Config");
-        public static readonly string ConfigFile = Path.Combine(CurrentProvider, "config.json");
-        public static readonly string EntityTemplateFile = Path.Combine(BasePath, "entity.template");
-        public static readonly string ContextTemplateFile = Path.Combine(BasePath, "context.template");
-        public static readonly string EntityConfigTemplateFile = Path.Combine(BasePath, "entity.config.template");
+        public static string BasePath { get; }
+        public static string ConfigFile { get { return Path.Combine(CurrentProvider, "config.json"); } }
+        public static string EntityTemplateFile { get { return Path.Combine(BasePath, "entity.template"); } }
+        public static string ContextTemplateFile { get { return Path.Combine(BasePath, "context.template"); } }
+        public static string EntityConfigTemplateFile { get { return Path.Combine(BasePath, "entity.config.template"); } }
 
-        public static void SwtichProvider(string provider) {
+        public static void SwtichProvider(string provider)
+        {
             _currentProvider = provider;
         }
 
-        private static string _currentProvider = null;
-        public static string CurrentProvider { get; } = _currentProvider;
+        private static string _currentProvider = "mysql";
+        public static string CurrentProvider
+        {
+            get
+            {
 
-        public static string CurrentProviderPath {
-            get {
+                return _currentProvider;
+            }
+        }
+
+        public static string CurrentProviderPath
+        {
+            get
+            {
                 return Path.Combine(BasePath, CurrentProvider);
             }
         }
 
 
-        public static string CurrentProviderQueryFile {
-            get {
+        public static string CurrentProviderQueryFile
+        {
+            get
+            {
                 return Path.Combine(CurrentProviderPath, "query.sql");
             }
         }
 
-        public static string CurrentProviderMapperFile {
-            get {
+        public static string CurrentProviderMapperFile
+        {
+            get
+            {
                 return Path.Combine(CurrentProviderPath, "mapper.txt");
             }
         }

@@ -1,5 +1,5 @@
 ﻿using Generator.Common;
-using Lazy.Utilities.Extensions;
+using Generator.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
