@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Generator.Utils;
 using Generator.Models;
 using Generator.Core;
+using System.Reflection;
 
 namespace Generator
 {
@@ -45,6 +46,7 @@ namespace Generator
                     cbxProviders.SelectedItem = "mysql";
 
                 Constant.SwtichProvider("mysql");
+                WriteFile();
             }
             catch (Exception ex)
             {
@@ -71,6 +73,44 @@ namespace Generator
             LastDataConfiguration.Instance.Save();
             new Main(selectedProject, txtConnString.Text).Show();
             this.Close();
+        }
+
+        private void WriteFile()
+        {
+            var ass = Assembly.GetExecutingAssembly();
+            var entityTemplate = ass.GetManifestResourceStream("Generator.Config.context.template");
+            var contextTemplate = ass.GetManifestResourceStream("Generator.Config.entity.template");
+            var configJson = ass.GetManifestResourceStream("Generator.Config.mysql.config.json");
+            var mapper = ass.GetManifestResourceStream("Generator.Config.mysql.mapper.txt");
+            var dll = ass.GetManifestResourceStream("Generator.Config.mysql.MySql.Data.dll");
+            var query = ass.GetManifestResourceStream("Generator.Config.mysql.query.sql");
+
+            if (!Directory.Exists(Constant.CurrentProviderPath))
+                Directory.CreateDirectory(Constant.CurrentProviderPath);
+
+            if (!File.Exists(Constant.EntityTemplateFile))
+                Write(entityTemplate, Constant.EntityTemplateFile);
+            if (!File.Exists(Constant.ContextTemplateFile))
+                Write(contextTemplate, Constant.ContextTemplateFile);
+            if (!File.Exists(Constant.ConfigFile))
+                Write(configJson, Constant.ConfigFile);
+            if (!File.Exists(Constant.CurrentProviderMapperFile))
+                Write(mapper, Constant.CurrentProviderMapperFile);
+            var dllFile = Path.Combine(Constant.CurrentProviderPath, "MySql.Data.dll");
+            if (!File.Exists(dllFile))
+                Write(dll, dllFile);
+            if (!File.Exists(Constant.CurrentProviderQueryFile))
+                Write(query, Constant.CurrentProviderQueryFile);
+        }
+
+
+        static void Write(Stream stream, string filename)
+        {
+            StreamWriter sw = new StreamWriter(filename);
+            stream.CopyTo(sw.BaseStream);
+            sw.Flush();
+            sw.Close();
+            stream.Close();
         }
     }
 }

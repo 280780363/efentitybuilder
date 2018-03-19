@@ -99,7 +99,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Config\mssql\config.json" />
-    <None Include="Config\mysql\config.json" />
+    <EmbeddedResource Include="Config\mysql\config.json" />
     <None Include="Key.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -109,11 +109,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\mysql\mapper.txt" />
-    <None Include="Config\entity.template" />
-    <None Include="Config\context.template" />
-    <Content Include="Config\mysql\MySql.Data.dll" />
-    <Content Include="Config\mysql\query.sql" />
+    <EmbeddedResource Include="Config\mysql\mapper.txt" />
+    <EmbeddedResource Include="Config\entity.template" />
+    <EmbeddedResource Include="Config\context.template" />
+    <EmbeddedResource Include="Config\mysql\MySql.Data.dll" />
+    <EmbeddedResource Include="Config\mysql\query.sql" />
     <VSCTCompile Include="GeneratePackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
