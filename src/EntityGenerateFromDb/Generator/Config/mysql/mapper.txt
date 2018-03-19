@@ -5,7 +5,7 @@ blob:byte[]
 boolean:bool?
 char:string
 #curve:未知
-data:DateTime?
+date:DateTime?
 datetime:DateTime?
 decimal:decimal?
 double:double?
@@ -19,7 +19,7 @@ longblob:byte[]
 longtext:string
 mediumblob:byte[]
 mediumint:int?
-mediutext:string
+mediumtext:string
 nchar:string
 numeric:decimal?
 nvarchar:string

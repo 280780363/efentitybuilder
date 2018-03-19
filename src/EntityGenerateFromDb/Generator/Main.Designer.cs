@@ -37,13 +37,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtSavePath = new System.Windows.Forms.TextBox();
             this.btnGenerate = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtContextPrefix = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbxlTables
             // 
             this.cbxlTables.FormattingEnabled = true;
-            this.cbxlTables.Location = new System.Drawing.Point(3, 56);
+            this.cbxlTables.Location = new System.Drawing.Point(7, 111);
             this.cbxlTables.Name = "cbxlTables";
             this.cbxlTables.Size = new System.Drawing.Size(323, 388);
             this.cbxlTables.TabIndex = 0;
@@ -51,16 +54,17 @@
             // cbxAll
             // 
             this.cbxAll.AutoSize = true;
-            this.cbxAll.Location = new System.Drawing.Point(6, 32);
+            this.cbxAll.Location = new System.Drawing.Point(10, 91);
             this.cbxAll.Name = "cbxAll";
             this.cbxAll.Size = new System.Drawing.Size(48, 16);
             this.cbxAll.TabIndex = 1;
             this.cbxAll.Text = "全选";
             this.cbxAll.UseVisualStyleBackColor = true;
+            this.cbxAll.CheckedChanged += new System.EventHandler(this.cbxAll_CheckedChanged);
             // 
             // txtLog
             // 
-            this.txtLog.Location = new System.Drawing.Point(337, 56);
+            this.txtLog.Location = new System.Drawing.Point(341, 111);
             this.txtLog.Name = "txtLog";
             this.txtLog.Size = new System.Drawing.Size(341, 388);
             this.txtLog.TabIndex = 2;
@@ -72,7 +76,7 @@
             this.编辑ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(687, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(693, 25);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -114,7 +118,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(335, 36);
+            this.label1.Location = new System.Drawing.Point(23, 33);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 4;
@@ -122,7 +126,7 @@
             // 
             // txtSavePath
             // 
-            this.txtSavePath.Location = new System.Drawing.Point(397, 31);
+            this.txtSavePath.Location = new System.Drawing.Point(82, 30);
             this.txtSavePath.Name = "txtSavePath";
             this.txtSavePath.Size = new System.Drawing.Size(279, 21);
             this.txtSavePath.TabIndex = 5;
@@ -130,25 +134,58 @@
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(60, 29);
+            this.btnGenerate.Location = new System.Drawing.Point(367, 30);
             this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(75, 23);
+            this.btnGenerate.Size = new System.Drawing.Size(76, 48);
             this.btnGenerate.TabIndex = 6;
             this.btnGenerate.Text = "开始生成";
             this.btnGenerate.UseVisualStyleBackColor = true;
+            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(5, 60);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 12);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Context名称";
+            // 
+            // txtContextPrefix
+            // 
+            this.txtContextPrefix.Location = new System.Drawing.Point(82, 57);
+            this.txtContextPrefix.Name = "txtContextPrefix";
+            this.txtContextPrefix.Size = new System.Drawing.Size(124, 21);
+            this.txtContextPrefix.TabIndex = 5;
+            this.txtContextPrefix.Text = "Your";
+            this.txtContextPrefix.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(205, 61);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 12);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "DbContext";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(687, 450);
+            this.ClientSize = new System.Drawing.Size(693, 503);
             this.Controls.Add(this.btnGenerate);
+            this.Controls.Add(this.txtContextPrefix);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtSavePath);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.cbxAll);
             this.Controls.Add(this.cbxlTables);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EFCore实体构建工具";
@@ -174,5 +211,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtSavePath;
         private System.Windows.Forms.Button btnGenerate;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtContextPrefix;
+        private System.Windows.Forms.Label label3;
     }
 }

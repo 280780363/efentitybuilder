@@ -9,8 +9,8 @@ namespace Generator.Core
 {
     public interface IGenerator
     {
-        string GenerateEntity(TableInfo table,All all);
+        string GenerateEntity(TableInfo table, All all);
 
-        string GenrateContext(All all);
+        string GenrateContext(All all, string contextName);
     }
 }

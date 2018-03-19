@@ -1,6 +1,6 @@
 ﻿SELECT
-	TABLE_NAME Name,
-	TABLE_COMMENT Description
+	TABLE_NAME,
+	TABLE_COMMENT
 FROM
 	information_schema.TABLES
 WHERE

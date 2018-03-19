@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Entities
 {
-    public class GenerateDbContext : DbContext
+    public class @CONTEXT_NAME : DbContext
     {
-        public GenerateDbContext(DbContextOptions<GenerateDbContext> options) : base(options)
+        public @CONTEXT_NAME(DbContextOptions<@CONTEXT_NAME> options) : base(options)
 		{
 
         }

@@ -24,9 +24,12 @@ namespace Generator.Utils
 
             if (File.Exists(_lastDataFile))
             {
-
-                string content = File.ReadAllText(_lastDataFile, Encoding.UTF8);
-                Instance = JsonConvert.DeserializeObject<LastDataConfiguration>(content);
+                var dic = JsonHelper.DeserializeFromFile<Dictionary<string, string>>(_lastDataFile);
+                Instance = new LastDataConfiguration();
+                foreach (var item in dic)
+                {
+                    Instance.Add(item.Key, item.Value);
+                }
             }
             else
                 Instance = new LastDataConfiguration();
@@ -38,8 +41,7 @@ namespace Generator.Utils
 
         public void Save()
         {
-            string content = JsonConvert.SerializeObject(Instance);
-            File.WriteAllText(_lastDataFile, content, Encoding.UTF8);
+            JsonHelper.SerializeToFile(Instance, _lastDataFile);
         }
 
         /// <summary>

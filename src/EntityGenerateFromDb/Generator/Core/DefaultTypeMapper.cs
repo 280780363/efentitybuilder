@@ -15,32 +15,36 @@ namespace Generator.Core
 
         static string lastProvider;
 
-        public string GetType(string dbType, bool isnull) {
-            if (lastProvider != Constant.CurrentProvider) {
+        public string GetType(string dbType, bool isnull)
+        {
+            if (lastProvider != Constant.CurrentProvider)
+            {
                 dic.Clear();
                 lastProvider = Constant.CurrentProvider;
 
                 File.ReadAllLines(Constant.CurrentProviderMapperFile)
                     .Select(r => r.Trim())
                     .Where(r => !r.IsNullOrWhiteSpace() && !r.StartsWith("#"))
-                    .ForEach_(r => {
+                    .ForEach_(r =>
+                    {
                         var arr = r.Split(':');
                         var dbtype = arr[0];
 
                         var netType = arr[1];
-                        var nullable = netType.EndsWith("?");
-                        if (nullable) {
+                        var hasNullType = netType.EndsWith("?");
+                        if (hasNullType)
+                        {
                             netType = netType.TrimEnd('?');
                         }
-                        dic.Add(dbtype, new NetType { Type = netType, Nullable = nullable });
+                        dic.Add(dbtype, new NetType { Type = netType, HasNullType = hasNullType });
                     });
             }
 
             if (!dic.ContainsKey(dbType))
-                return null;
+                return "找不到的数据库映射类型:" + dbType + ",请先编辑类型映射文件";
             var type = dic[dbType];
-            if (isnull && type.Nullable)
-                return type + "?";
+            if (isnull && type.HasNullType)
+                return type.Type + "?";
 
             return type.Type;
         }
@@ -50,7 +54,7 @@ namespace Generator.Core
         {
             public string Type { get; set; }
 
-            public bool Nullable { get; set; }
+            public bool HasNullType { get; set; }
         }
     }
 }
