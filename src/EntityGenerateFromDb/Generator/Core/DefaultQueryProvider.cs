@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Generator.Common;
+using Generator.Utils;
 using Generator.Models;
 using Generator.Utils;
 

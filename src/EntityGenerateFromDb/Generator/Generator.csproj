@@ -54,7 +54,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Common\Constant.cs" />
+    <Compile Include="Utils\Constant.cs" />
     <Compile Include="Utils\IEnumerableExtensions.cs" />
     <Compile Include="Utils\JsonHelper.cs" />
     <Compile Include="Utils\LastDataConfiguration.cs" />

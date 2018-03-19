@@ -1,5 +1,5 @@
 ﻿using EnvDTE;
-using Generator.Common;
+using Generator.Utils;
 using Generator.Core;
 using Generator.Models;
 using Generator.Utils;

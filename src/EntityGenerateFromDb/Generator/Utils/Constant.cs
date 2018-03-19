@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Generator.Common
+namespace Generator.Utils
 {
     public static class Constant
     {
