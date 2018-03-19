@@ -14,7 +14,7 @@ namespace Generator.Common
         /// 程序基础路径
         /// </summary>
         public static readonly string BasePath = Path.Combine(Assembly.GetExecutingAssembly().Location, "Config");
-        public static readonly string ConfigFile = Path.Combine(BasePath, "config.json");
+        public static readonly string ConfigFile = Path.Combine(CurrentProvider, "config.json");
         public static readonly string EntityTemplateFile = Path.Combine(BasePath, "entity.template");
         public static readonly string ContextTemplateFile = Path.Combine(BasePath, "context.template");
         public static readonly string EntityConfigTemplateFile = Path.Combine(BasePath, "entity.config.template");
@@ -23,7 +23,7 @@ namespace Generator.Common
             _currentProvider = provider;
         }
 
-        private static string _currentProvider = "mysql";
+        private static string _currentProvider = null;
         public static string CurrentProvider { get; } = _currentProvider;
 
         public static string CurrentProviderPath {

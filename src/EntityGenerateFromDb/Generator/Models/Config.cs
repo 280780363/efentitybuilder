@@ -8,6 +8,7 @@ namespace Generator.Models
 {
     public class Config
     {
+        public string Name { get; set; }
         public string ProviderAssembly { get; set; }
         public string ConnectionType { get; set; }
     }

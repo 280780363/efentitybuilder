@@ -19,12 +19,12 @@ longblob:byte[]
 longtext:string
 mediumblob:byte[]
 mediumint:int?
-mediutext:string?
-nchar:string?
+mediutext:string
+nchar:string
 numeric:decimal?
-nvarchar:string?
+nvarchar:string
 real:float?
-set:string?
+set:string
 smallint:short?
 text:string
 time:TimeSpan?
