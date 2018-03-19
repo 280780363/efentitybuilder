@@ -8,6 +8,6 @@ namespace Generator.Core
 {
     public interface ITypeMapper
     {
-        string GetType(string dbType);
+        string GetType(string dbType, bool isnull);
     }
 }

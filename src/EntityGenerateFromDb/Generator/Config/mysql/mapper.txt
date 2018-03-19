@@ -1,0 +1,41 @@
+﻿bigint:long?
+binary:byte[]
+bit:bool?
+blob:byte[]
+boolean:bool?
+char:string
+#curve:未知
+data:DateTime?
+datetime:DateTime?
+decimal:decimal?
+double:double?
+enum:string
+float:float?
+#geometry:未知
+guid:Guid?
+int:int?
+json:string
+longblob:byte[]
+longtext:string
+mediumblob:byte[]
+mediumint:int?
+mediutext:string?
+nchar:string?
+numeric:decimal?
+nvarchar:string?
+real:float?
+set:string?
+smallint:short?
+text:string
+time:TimeSpan?
+timestamp:DateTime?
+tinyblob:byte[]
+tinytext:string
+tinyint:sbyte?
+ungigned bigint:ulong?
+ungigned int:uint?
+ungigned smallint:ushort?
+ungigned tinyint:byte?
+varbinary:byte[]
+varchar:string
+year:short?

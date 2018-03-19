@@ -1,4 +1,4 @@
-﻿using Generator.Abstraction;
+﻿using Generator.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Generator.Core
 {
-    public interface IForeignKeyProvider
+    public interface IGenerator
     {
-        IEnumerable<ForeignKeyInfo> GetAll();
+        string GenerateEntity(TableInfo table,All all);
+
+        string GenrateContext(All all);
     }
 }

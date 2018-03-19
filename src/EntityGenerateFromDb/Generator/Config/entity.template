@@ -1,1 +1,20 @@
-﻿
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Entities
+{
+    /// <summary>
+    /// @TABLE_DES
+    /// </summary>
+    public partial class @ENTITY_CLASS_NAME
+    {
+@ENTITY_PROPERTYS
+    }
+
+    public partial class config_@ENTITY_CLASS_NAME : IEntityTypeConfiguration<@ENTITY_CLASS_NAME>
+    {
+        public void Configure(EntityTypeBuilder<@ENTITY_CLASS_NAME> builder) {
+@CONFIG_CONTENT
+        }
+    }
+}

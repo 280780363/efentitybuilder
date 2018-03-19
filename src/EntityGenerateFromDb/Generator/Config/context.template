@@ -1,1 +1,21 @@
-﻿
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Entities
+{
+    public class GenerateDbContext : DbContext
+    {
+        public GenerateDbContext(DbContextOptions<GenerateDbContext> options) : base(options)
+		{
+
+        }
+		
+@CONTEXT_PROPERTYS
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+            base.OnModelCreating(modelBuilder);
+
+@CONTEXT_ENTITY_CONFIG
+        }
+    }
+}

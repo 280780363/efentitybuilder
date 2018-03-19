@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Generator.Abstraction
+namespace Generator.Models
 {
     public class ColumnInfo
     {
+        public string TableName { get; set; }
+
         public string Name { get; set; }
 
         public string Desciption { get; set; }
@@ -16,12 +18,10 @@ namespace Generator.Abstraction
 
         public bool IsPrimaryKey { get; set; }
 
-        public bool IsRequired { get; set; }
+        public bool IsNullable { get; set; }
 
         public bool IsIdentity { get; set; }
 
-        public long Length { get; set; }
-
-        public ForeignKeyInfo ForeignKey { get; set; }
+        public long? Length { get; set; }
     }
 }

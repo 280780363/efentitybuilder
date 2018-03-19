@@ -1,14 +1,15 @@
-﻿using Generator.Abstraction;
+﻿using Generator.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Generator.Core
 {
-    public interface IColumnProvider
+    public interface IQueryProvider
     {
-        IEnumerable<ColumnInfo> GetAll();
+        All GetAll(IDbConnection connection);
     }
 }

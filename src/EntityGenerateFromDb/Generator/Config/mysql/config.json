@@ -1,0 +1,4 @@
+﻿{
+  "ProviderAssembly": "MySql.Data.dll",
+  "ConnectionType": "MySql.Data.MySqlClient.MySqlConnection"
+}

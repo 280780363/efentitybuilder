@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Generator.Models
 {
-    public class TableInfo
+    public class Config
     {
-        public string Name { get; set; }
-
-        public string Desciption { get; set; }
+        public string ProviderAssembly { get; set; }
+        public string ConnectionType { get; set; }
     }
 }
