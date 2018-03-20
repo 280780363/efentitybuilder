@@ -11,6 +11,6 @@ namespace Generator.Core
     {
         string GenerateEntity(TableInfo table, All all);
 
-        string GenrateContext(All all, string contextName);
+        string GenrateContext(IEnumerable<TableInfo> tables, string contextName);
     }
 }

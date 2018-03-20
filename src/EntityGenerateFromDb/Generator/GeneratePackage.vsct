@@ -56,7 +56,7 @@
         <Parent guid="guidGeneratePackageCmdSet" id="MyMenuGroup" />
         <Icon guid="右键图标" id="icon1" />
         <Strings>
-          <ButtonText>Issue nuget package</ButtonText>
+          <ButtonText>创建EFCore实体</ButtonText>
         </Strings>
       </Button>
 

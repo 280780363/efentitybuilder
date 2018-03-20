@@ -96,24 +96,28 @@
             this.编辑实体模板ToolStripMenuItem.Name = "编辑实体模板ToolStripMenuItem";
             this.编辑实体模板ToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.编辑实体模板ToolStripMenuItem.Text = "编辑实体模板";
+            this.编辑实体模板ToolStripMenuItem.Click += new System.EventHandler(this.编辑实体模板ToolStripMenuItem_Click);
             // 
             // 编辑数据库上下文模板ToolStripMenuItem
             // 
             this.编辑数据库上下文模板ToolStripMenuItem.Name = "编辑数据库上下文模板ToolStripMenuItem";
             this.编辑数据库上下文模板ToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.编辑数据库上下文模板ToolStripMenuItem.Text = "编辑数据库上下文模板";
+            this.编辑数据库上下文模板ToolStripMenuItem.Click += new System.EventHandler(this.编辑数据库上下文模板ToolStripMenuItem_Click);
             // 
             // 编辑类型映射ToolStripMenuItem
             // 
             this.编辑类型映射ToolStripMenuItem.Name = "编辑类型映射ToolStripMenuItem";
             this.编辑类型映射ToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.编辑类型映射ToolStripMenuItem.Text = "编辑类型映射";
+            this.编辑类型映射ToolStripMenuItem.Click += new System.EventHandler(this.编辑类型映射ToolStripMenuItem_Click);
             // 
             // 编辑查询语句ToolStripMenuItem
             // 
             this.编辑查询语句ToolStripMenuItem.Name = "编辑查询语句ToolStripMenuItem";
             this.编辑查询语句ToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.编辑查询语句ToolStripMenuItem.Text = "编辑查询语句";
+            this.编辑查询语句ToolStripMenuItem.Click += new System.EventHandler(this.编辑查询语句ToolStripMenuItem_Click);
             // 
             // label1
             // 

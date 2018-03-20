@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Generator.Utils;
 
 namespace Generator
 {
@@ -19,8 +20,7 @@ namespace Generator
     {
         SelectedProject selectedProject;
         string connString;
-        public Main(SelectedProject selectedProject, string connString)
-        {
+        public Main(SelectedProject selectedProject, string connString) {
             this.selectedProject = selectedProject;
             this.connString = connString;
             InitializeComponent();
@@ -28,14 +28,11 @@ namespace Generator
 
 
         All all;
-        private void Main_Load(object sender, EventArgs e)
-        {
-            using (var conn = Factory.DbProvider().Connection(connString))
-            {
+        private void Main_Load(object sender, EventArgs e) {
+            using (var conn = Factory.DbProvider().Connection(connString)) {
                 this.Text = $"{this.Text}[{Constant.CurrentProvider}:{conn.Database}]";
                 all = Factory.QueryProvider().GetAll(conn);
-                foreach (var item in all.Tables)
-                {
+                foreach (var item in all.Tables) {
                     cbxlTables.Items.Add(item.Name);
                 }
 
@@ -46,18 +43,14 @@ namespace Generator
             }
         }
 
-        private void cbxAll_CheckedChanged(object sender, EventArgs e)
-        {
-            for (int i = 0; i < cbxlTables.Items.Count; i++)
-            {
+        private void cbxAll_CheckedChanged(object sender, EventArgs e) {
+            for (int i = 0; i < cbxlTables.Items.Count; i++) {
                 cbxlTables.SetItemChecked(i, cbxAll.Checked);
             }
         }
 
-        private async void btnGenerate_Click(object sender, EventArgs e)
-        {
-            try
-            {
+        private async void btnGenerate_Click(object sender, EventArgs e) {
+            try {
                 ProjectItem lastItem = null;
                 if (!txtSavePath.Text.IsNullOrWhiteSpace())
                     lastItem = this.selectedProject.ProjectDte.AddFolderToProject(txtSavePath.Text);
@@ -72,54 +65,54 @@ namespace Generator
 
                 string generatorTempDir = Path.Combine(Constant.BasePath, "generate_temp");
                 bool shouldDeleteTempDir = false;
-                if (!Directory.Exists(generatorTempDir))
-                {
+                if (!Directory.Exists(generatorTempDir)) {
                     shouldDeleteTempDir = true;
                     Directory.CreateDirectory(generatorTempDir);
+                }
+
+                List<TableInfo> checkedTables = new List<TableInfo>();
+                foreach (var item in cbxlTables.CheckedItems) {
+                    var table = all.Tables.FirstOrDefault(r => r.Name.EqualsIgnoreCase(item.ToString()));
+                    if (table != null)
+                        checkedTables.Add(table);
                 }
 
                 #region 实体类创建
 
                 var generator = Factory.Generator();
 
-                foreach (var item in all.Tables)
-                {
+                foreach (var table in checkedTables) {
 
-                    await ShowBuildMsgAsync($"开始为您创建实体:\"{item.Name}.cs\"");
+                    await ShowBuildMsgAsync($"开始为您创建实体:\"{table.Name}.cs\"");
 
                     //这里无需等待
-                    await Task.Run(async () =>
-                     {
-                         try
-                         {
-                             string classContent = generator.GenerateEntity(item, all);
-                             var fileFullName = Path.Combine(saveDir, item.Name + ".cs");
+                    await Task.Run(async () => {
+                        try {
+                            string classContent = generator.GenerateEntity(table, all);
+                            var fileFullName = Path.Combine(saveDir, table.Name + ".cs");
 
-                             if (!File.Exists(fileFullName))
-                             {
-                                 var fileTempFullName = Path.Combine(generatorTempDir, item.Name + ".cs");
+                            if (!File.Exists(fileFullName)) {
+                                var fileTempFullName = Path.Combine(generatorTempDir, table.Name + ".cs");
 
-                                 File.WriteAllText(fileTempFullName, classContent, Encoding.UTF8);
-                                 if (lastItem != null)
-                                     lastItem.AddFilesToProject(fileTempFullName);
-                                 else
-                                     this.selectedProject.ProjectDte.AddFilesToProject(fileTempFullName);
-                                 selectedProject.ProjectDte.Save();
+                                File.WriteAllText(fileTempFullName, classContent, Encoding.UTF8);
+                                if (lastItem != null)
+                                    lastItem.AddFilesToProject(fileTempFullName);
+                                else
+                                    this.selectedProject.ProjectDte.AddFilesToProject(fileTempFullName);
+                                selectedProject.ProjectDte.Save();
 
-                                 File.Delete(fileTempFullName);
-                             }
-                             else
-                             {
-                                 File.WriteAllText(fileFullName, classContent, Encoding.UTF8);
-                             }
+                                File.Delete(fileTempFullName);
+                            }
+                            else {
+                                File.WriteAllText(fileFullName, classContent, Encoding.UTF8);
+                            }
 
-                             await ShowBuildMsgAsync($"实体文件[{item.Name}.cs]创建完成");
-                         }
-                         catch (Exception ex)
-                         {
-                             await ShowBuildMsgAsync($"创建实体文件[{item.Name}.cs]出现错误:{JsonHelper.ToJson(ex)}");
-                         }
-                     });
+                            await ShowBuildMsgAsync($"实体文件[{table.Name}.cs]创建完成");
+                        }
+                        catch (Exception ex) {
+                            await ShowBuildMsgAsync($"创建实体文件[{table.Name}.cs]出现错误:{JsonHelper.ToJson(ex)}");
+                        }
+                    });
                 }
 
                 #endregion
@@ -127,14 +120,15 @@ namespace Generator
                 #region dbcontext创建
 
                 string contextName = txtContextPrefix.Text + "DbContext";
-                string contextClassContent = generator.GenrateContext(all, contextName);
-                try
-                {
+
+
+
+                string contextClassContent = generator.GenrateContext(checkedTables, contextName);
+                try {
                     var fileFullName = Path.Combine(saveDir, contextName + ".cs");
                     await ShowBuildMsgAsync($"正在为您创建:\"{contextName}.cs\"");
 
-                    if (!File.Exists(fileFullName))
-                    {
+                    if (!File.Exists(fileFullName)) {
                         var fileTempFullName = Path.Combine(generatorTempDir, contextName + ".cs");
 
                         File.WriteAllText(fileTempFullName, contextClassContent, Encoding.UTF8);
@@ -147,13 +141,11 @@ namespace Generator
 
                         File.Delete(fileTempFullName);
                     }
-                    else
-                    {
+                    else {
                         File.WriteAllText(fileFullName, contextClassContent, Encoding.UTF8);
                     }
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     await ShowBuildMsgAsync($"创建DbContext文件[{contextName}.cs]出现错误:{JsonHelper.ToJson(ex)}");
                 }
 
@@ -168,19 +160,33 @@ namespace Generator
 
                 await ShowBuildMsgAsync("已为您创建完成!");
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private async Task ShowBuildMsgAsync(string msg)
-        {
+        private async Task ShowBuildMsgAsync(string msg) {
             if (!txtLog.Text.IsNullOrWhiteSpace())
                 txtLog.AppendText("\r\n");
             txtLog.AppendText(msg);
             txtLog.ScrollToCaret();
             await Task.CompletedTask;
+        }
+
+        private void 编辑实体模板ToolStripMenuItem_Click(object sender, EventArgs e) {
+            System.Diagnostics.Process.Start("notepad.exe", Constant.EntityTemplateFile);
+        }
+
+        private void 编辑数据库上下文模板ToolStripMenuItem_Click(object sender, EventArgs e) {
+            System.Diagnostics.Process.Start("notepad.exe", Constant.ContextTemplateFile);
+        }
+
+        private void 编辑类型映射ToolStripMenuItem_Click(object sender, EventArgs e) {
+            System.Diagnostics.Process.Start("notepad.exe", Constant.CurrentProviderMapperFile);
+        }
+
+        private void 编辑查询语句ToolStripMenuItem_Click(object sender, EventArgs e) {
+            System.Diagnostics.Process.Start("notepad.exe", Constant.CurrentProviderQueryFile);
         }
     }
 }

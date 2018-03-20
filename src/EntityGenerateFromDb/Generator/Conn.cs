@@ -71,11 +71,11 @@ namespace Generator
                 Directory.CreateDirectory(Constant.CurrentProviderPath);
 
             if (!File.Exists(Constant.EntityTemplateFile)) {
-                var entityTemplate = ass.GetManifestResourceStream("Generator.Config.context.template");
+                var entityTemplate = ass.GetManifestResourceStream("Generator.Config.entity.template");
                 Write(entityTemplate, Constant.EntityTemplateFile);
             }
             if (!File.Exists(Constant.ContextTemplateFile)) {
-                var contextTemplate = ass.GetManifestResourceStream("Generator.Config.entity.template");
+                var contextTemplate = ass.GetManifestResourceStream("Generator.Config.context.template");
                 Write(contextTemplate, Constant.ContextTemplateFile);
             }
             if (!File.Exists(Constant.ConfigFile)) {

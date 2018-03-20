@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="Generator.170b787a-5e79-4ed9-a403-e5e22f850215" Version="1.1" Language="en-US" Publisher="gucao" />
+        <Identity Id="Generator.170b787a-5e79-4ed9-a403-e5e22f850215" Version="1.0" Language="en-US" Publisher="gucao" />
         <DisplayName>EFCoreGenerator</DisplayName>
         <Description xml:space="preserve">ef core entity generate from db</Description>
     </Metadata>
