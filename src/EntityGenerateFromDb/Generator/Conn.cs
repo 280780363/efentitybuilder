@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Generator.Utils;
 using Generator.Models;
 using Generator.Core;
 using System.Reflection;
@@ -19,19 +18,17 @@ namespace Generator
     public partial class Conn : Form
     {
         SelectedProject selectedProject;
-        public Conn(SelectedProject selectedProject)
-        {
+        public Conn(SelectedProject selectedProject) {
             this.selectedProject = selectedProject;
             InitializeComponent();
         }
 
-        private void Conn_Load(object sender, EventArgs e)
-        {
-            try
-            {
+        private void Conn_Load(object sender, EventArgs e) {
+            try {
+                Constant.SwtichProvider("mysql");
+                WriteFile();
                 var files = Directory.EnumerateFiles(Constant.BasePath, "config.json", SearchOption.AllDirectories);
-                foreach (var item in files)
-                {
+                foreach (var item in files) {
                     var config = JsonHelper.DeserializeFromFile<Config>(item);
                     if (!config.Name.IsNullOrWhiteSpace())
                         cbxProviders.Items.Add(config.Name);
@@ -44,27 +41,19 @@ namespace Generator
                     cbxProviders.SelectedItem = LastDataConfiguration.Instance.Get("DbProvider");
                 else
                     cbxProviders.SelectedItem = "mysql";
-
-                Constant.SwtichProvider("mysql");
-                WriteFile();
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
+        private void button1_Click(object sender, EventArgs e) {
             Constant.SwtichProvider(cbxProviders.SelectedItem.ToString());
-            using (var conn = Factory.DbProvider().Connection(txtConnString.Text))
-            {
-                try
-                {
+            using (var conn = Factory.DbProvider().Connection(txtConnString.Text)) {
+                try {
                     conn.Open();
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     MessageBox.Show("数据库连接失败:" + ex.Message);
                 }
             }
@@ -75,37 +64,42 @@ namespace Generator
             this.Close();
         }
 
-        private void WriteFile()
-        {
+        private void WriteFile() {
             var ass = Assembly.GetExecutingAssembly();
-            var entityTemplate = ass.GetManifestResourceStream("Generator.Config.context.template");
-            var contextTemplate = ass.GetManifestResourceStream("Generator.Config.entity.template");
-            var configJson = ass.GetManifestResourceStream("Generator.Config.mysql.config.json");
-            var mapper = ass.GetManifestResourceStream("Generator.Config.mysql.mapper.txt");
-            var dll = ass.GetManifestResourceStream("Generator.Config.mysql.MySql.Data.dll");
-            var query = ass.GetManifestResourceStream("Generator.Config.mysql.query.sql");
 
             if (!Directory.Exists(Constant.CurrentProviderPath))
                 Directory.CreateDirectory(Constant.CurrentProviderPath);
 
-            if (!File.Exists(Constant.EntityTemplateFile))
+            if (!File.Exists(Constant.EntityTemplateFile)) {
+                var entityTemplate = ass.GetManifestResourceStream("Generator.Config.context.template");
                 Write(entityTemplate, Constant.EntityTemplateFile);
-            if (!File.Exists(Constant.ContextTemplateFile))
+            }
+            if (!File.Exists(Constant.ContextTemplateFile)) {
+                var contextTemplate = ass.GetManifestResourceStream("Generator.Config.entity.template");
                 Write(contextTemplate, Constant.ContextTemplateFile);
-            if (!File.Exists(Constant.ConfigFile))
+            }
+            if (!File.Exists(Constant.ConfigFile)) {
+                var configJson = ass.GetManifestResourceStream("Generator.Config.mysql.config.json");
                 Write(configJson, Constant.ConfigFile);
-            if (!File.Exists(Constant.CurrentProviderMapperFile))
+            }
+
+            if (!File.Exists(Constant.CurrentProviderMapperFile)) {
+                var mapper = ass.GetManifestResourceStream("Generator.Config.mysql.mapper.txt");
                 Write(mapper, Constant.CurrentProviderMapperFile);
+            }
             var dllFile = Path.Combine(Constant.CurrentProviderPath, "MySql.Data.dll");
-            if (!File.Exists(dllFile))
+            if (!File.Exists(dllFile)) {
+                var dll = ass.GetManifestResourceStream("Generator.Config.mysql.MySql.Data.dll");
                 Write(dll, dllFile);
-            if (!File.Exists(Constant.CurrentProviderQueryFile))
+            }
+            if (!File.Exists(Constant.CurrentProviderQueryFile)) {
+                var query = ass.GetManifestResourceStream("Generator.Config.mysql.query.sql");
                 Write(query, Constant.CurrentProviderQueryFile);
+            }
         }
 
 
-        static void Write(Stream stream, string filename)
-        {
+        static void Write(Stream stream, string filename) {
             StreamWriter sw = new StreamWriter(filename);
             stream.CopyTo(sw.BaseStream);
             sw.Flush();
