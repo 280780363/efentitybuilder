@@ -3,7 +3,7 @@ using System;
 
 namespace Entities
 {
-    public class @CONTEXT_NAME : DbContext
+    public partial class @CONTEXT_NAME : DbContext
     {
         public @CONTEXT_NAME(DbContextOptions<@CONTEXT_NAME> options) : base(options)
 		{
