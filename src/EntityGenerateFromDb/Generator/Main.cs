@@ -32,9 +32,9 @@ namespace Generator
                 this.Text = $"{this.Text}[{Constant.CurrentProvider}:{conn.Database}]";
                 all = Factory.QueryProvider().GetAll(conn);
                 foreach (var item in all.Tables) {
-                    cbxlTables.Items.Add(item.Name);
+                    cbxlTables.Items.Add(item.Name, true);
                 }
-
+                cbxAll.Checked = true;
                 if (!LastDataConfiguration.Instance.Get("SavePath").IsNullOrWhiteSpace())
                     txtSavePath.Text = LastDataConfiguration.Instance.Get("SavePath");
                 if (!LastDataConfiguration.Instance.Get("ContextPrefix").IsNullOrWhiteSpace())
