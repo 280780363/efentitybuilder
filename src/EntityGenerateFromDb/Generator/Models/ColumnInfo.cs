@@ -18,7 +18,7 @@ namespace Generator.Models
 
         public bool IsPrimaryKey { get; set; }
 
-        public bool IsNullable { get; set; }
+        public bool Nullable { get; set; }
 
         public bool IsIdentity { get; set; }
 

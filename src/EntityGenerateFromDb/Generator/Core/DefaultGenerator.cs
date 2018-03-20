@@ -24,16 +24,16 @@ namespace Generator.Core
                 propertys.Append(getEntityPropertyByColumn(item));
             }
             foreach (var item in baseForeignKeys) {
-                propertys.AppendLine(getEntityPropertyByBaseForeignKey(item));
+                propertys.AppendLine(getEntityPropertyByBaseForeignKey(item, all));
             }
             foreach (var item in referencesForeignKeys) {
-                propertys.AppendLine(getEntityPropertyByReferencesForeignKey(item));
+                propertys.AppendLine(getEntityPropertyByReferencesForeignKey(item, all));
             }
 
             var content = entityContent.Replace("@TABLE_DES", (table.Desciption.IsNullOrWhiteSpace() ? table.Name : table.Desciption).Replace("\r\n", " ").Replace("\n", " "))
                  .Replace("@ENTITY_CLASS_NAME", table.Name)
                  .Replace("@ENTITY_PROPERTYS", propertys.ToString())
-                 .Replace("@CONFIG_CONTENT", getEntityConfiurationContent(table, columns, baseForeignKeys));
+                 .Replace("@CONFIG_CONTENT", getEntityConfiurationContent(table, columns, baseForeignKeys, all));
 
             return content;
         }
@@ -63,26 +63,26 @@ namespace Generator.Core
                 sb.AppendLine("\t\t/// </summary>");
             }
             //TODO:
-            sb.AppendLine($"\t\tpublic {mapper.GetType(column.ColumnDbType, column.IsNullable) ?? column.ColumnDbType} {column.Name} {{ get; set; }}");
+            sb.AppendLine($"\t\tpublic {mapper.GetType(column.ColumnDbType, column.Nullable) ?? column.ColumnDbType} {column.Name} {{ get; set; }}");
 
             return sb.ToString();
         }
 
-        private string getEntityPropertyByBaseForeignKey(ForeignKeyInfo foreignKey) {
-            string baseColumnName = foreignKey.BaseColumnName;
-            if (foreignKey.BaseColumnName.EndsWith("id", StringComparison.OrdinalIgnoreCase))
-                baseColumnName = foreignKey.BaseColumnName.Substring(0, foreignKey.BaseColumnName.IndexOf("id", StringComparison.OrdinalIgnoreCase));
-            return $"\t\tpublic virtual {foreignKey.ReferencesTableName} {baseColumnName}_{foreignKey.ReferencesTableName} {{ get; set; }}";
+        private string getEntityPropertyByBaseForeignKey(ForeignKeyInfo foreignKey, All all) {
+            //string baseColumnName = foreignKey.BaseColumnName;
+            //if (foreignKey.BaseColumnName.EndsWith("id", StringComparison.OrdinalIgnoreCase))
+            //    baseColumnName = foreignKey.BaseColumnName.Substring(0, foreignKey.BaseColumnName.IndexOf("id", StringComparison.OrdinalIgnoreCase));
+            return $"\t\tpublic virtual {foreignKey.ReferencesTableName} {foreignKey.BasePropertyName(all)} {{ get; set; }}";
         }
 
-        private string getEntityPropertyByReferencesForeignKey(ForeignKeyInfo foreignKey) {
-            string baseColumnName = foreignKey.BaseColumnName;
-            if (foreignKey.BaseColumnName.EndsWith("id", StringComparison.OrdinalIgnoreCase))
-                baseColumnName = foreignKey.BaseColumnName.Substring(0, foreignKey.BaseColumnName.IndexOf("id", StringComparison.OrdinalIgnoreCase));
-            return $"\t\tpublic virtual IList<{foreignKey.ReferencesTableName}> {baseColumnName}_{foreignKey.BaseTableName}s {{ get; set; }}";
+        private string getEntityPropertyByReferencesForeignKey(ForeignKeyInfo foreignKey, All all) {
+            //string baseColumnName = foreignKey.BaseColumnName;
+            //if (foreignKey.BaseColumnName.EndsWith("id", StringComparison.OrdinalIgnoreCase))
+            //    baseColumnName = foreignKey.BaseColumnName.Substring(0, foreignKey.BaseColumnName.IndexOf("id", StringComparison.OrdinalIgnoreCase));
+            return $"\t\tpublic virtual ICollection<{foreignKey.BaseTableName}> {foreignKey.ReferencesPropertyName(all)} {{ get; set; }}";
         }
 
-        private string getEntityConfiurationContent(TableInfo table, List<ColumnInfo> columns, List<ForeignKeyInfo> baseForeignKeys) {
+        private string getEntityConfiurationContent(TableInfo table, List<ColumnInfo> columns, List<ForeignKeyInfo> baseForeignKeys, All all) {
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"\t\t\tbuilder.ToTable(\"{table.Name}\");");
@@ -94,13 +94,13 @@ namespace Generator.Core
             }
 
             foreach (var item in columns) {
-                if (mapper.GetType(item.ColumnDbType, item.IsNullable)?.EqualsIgnoreCase("string") == true) {
-                    sb.AppendLine($"\t\t\tbuilder.Property(r => r.{item.Name}).HasMaxLength({item.Length ?? int.MaxValue}).IsRequired({(item.IsNullable ? "false" : "true")});");
+                if (mapper.GetType(item.ColumnDbType, item.Nullable)?.EqualsIgnoreCase("string") == true) {
+                    sb.AppendLine($"\t\t\tbuilder.Property(r => r.{item.Name}).{(item.Length.HasValue ? $"HasMaxLength({item.Length})" : "")}.IsRequired({(item.Nullable ? "false" : "true")});");
                 }
             }
 
             foreach (var item in baseForeignKeys) {
-                sb.AppendLine($"\t\t\tbuilder.HasOne(r => r.{item.BaseTableName}_{item.BaseColumnName}).WithMany().HasForeignKey(r => r.{item.BaseColumnName})");
+                sb.AppendLine($"\t\t\tbuilder.HasOne(r => r.{item.BasePropertyName(all)}).WithMany().HasForeignKey(r => r.{item.BaseColumnName});");
             }
 
             return sb.ToString();

@@ -14,25 +14,21 @@ namespace Generator.Core
 
         static string lastProvider;
 
-        public string GetType(string dbType, bool isnull)
-        {
-            if (lastProvider != Constant.CurrentProvider)
-            {
+        public string GetType(string dbType, bool nullable) {
+            if (lastProvider != Constant.CurrentProvider) {
                 dic.Clear();
                 lastProvider = Constant.CurrentProvider;
 
                 File.ReadAllLines(Constant.CurrentProviderMapperFile)
                     .Select(r => r.Trim())
                     .Where(r => !r.IsNullOrWhiteSpace() && !r.StartsWith("#"))
-                    .ForEach_(r =>
-                    {
+                    .ForEach_(r => {
                         var arr = r.Split(':');
                         var dbtype = arr[0];
 
                         var netType = arr[1];
                         var hasNullType = netType.EndsWith("?");
-                        if (hasNullType)
-                        {
+                        if (hasNullType) {
                             netType = netType.TrimEnd('?');
                         }
                         dic.Add(dbtype, new NetType { Type = netType, HasNullType = hasNullType });
@@ -42,7 +38,7 @@ namespace Generator.Core
             if (!dic.ContainsKey(dbType))
                 return "找不到的数据库映射类型:" + dbType + ",请先编辑类型映射文件";
             var type = dic[dbType];
-            if (isnull && type.HasNullType)
+            if (nullable && type.HasNullType)
                 return type.Type + "?";
 
             return type.Type;
