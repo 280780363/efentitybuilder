@@ -79,7 +79,7 @@ namespace Generator
                 #region 实体类创建
 
                 var generator = Factory.Generator();
-
+                string path = txtSavePath.Text.Split(new[] { "/", "\\" }, StringSplitOptions.RemoveEmptyEntries)?.Join(".");
                 foreach (var table in checkedTables) {
 
                     await ShowBuildMsgAsync($"开始为您创建实体:\"{table.Name}.cs\"");
@@ -87,7 +87,7 @@ namespace Generator
                     //这里无需等待
                     await Task.Run(async () => {
                         try {
-                            string classContent = generator.GenerateEntity(table, all);
+                            string classContent = generator.GenerateEntity(table, all, selectedProject.ProjectName, path);
                             var fileFullName = Path.Combine(saveDir, table.Name + ".cs");
 
                             if (!File.Exists(fileFullName)) {
@@ -122,7 +122,7 @@ namespace Generator
 
 
 
-                string contextClassContent = generator.GenrateContext(checkedTables, contextName);
+                string contextClassContent = generator.GenrateContext(checkedTables, contextName, selectedProject.ProjectName, path);
                 try {
                     var fileFullName = Path.Combine(saveDir, contextName + ".cs");
                     await ShowBuildMsgAsync($"正在为您创建:\"{contextName}.cs\"");

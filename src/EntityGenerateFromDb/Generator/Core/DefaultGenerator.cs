@@ -13,7 +13,7 @@ namespace Generator.Core
 
         ITypeMapper mapper = Factory.TypeMapper();
 
-        public string GenerateEntity(TableInfo table, All all) {
+        public string GenerateEntity(TableInfo table, All all, string projectName, string savePath) {
             var entityContent = File.ReadAllText(Constant.EntityTemplateFile);
 
             var columns = all.Columns.Where(r => r.TableName.EqualsIgnoreCase(table.Name)).ToList();
@@ -33,12 +33,15 @@ namespace Generator.Core
             var content = entityContent.Replace("@TABLE_DES", (table.Desciption.IsNullOrWhiteSpace() ? table.Name : table.Desciption).Replace("\r\n", " ").Replace("\n", " "))
                  .Replace("@ENTITY_CLASS_NAME", table.Name)
                  .Replace("@ENTITY_PROPERTYS", propertys.ToString())
-                 .Replace("@CONFIG_CONTENT", getEntityConfiurationContent(table, columns, baseForeignKeys, all));
+                 .Replace("@CONFIG_CONTENT", getEntityConfiurationContent(table, columns, baseForeignKeys, all))
+                 .Replace("@PROJECT_NAME", projectName)
+                 .Replace(".@PATH", savePath.IsNullOrWhiteSpace() ? "" : "." + savePath)
+                 .Replace("@PATH", savePath.IsNullOrWhiteSpace() ? "" : savePath);
 
             return content;
         }
 
-        public string GenrateContext(IEnumerable<TableInfo> tables, string contextName) {
+        public string GenrateContext(IEnumerable<TableInfo> tables, string contextName, string projectName, string savePath) {
             var configContent = File.ReadAllText(Constant.ContextTemplateFile);
             StringBuilder propertys = new StringBuilder();
             StringBuilder entityConfigs = new StringBuilder();
@@ -48,7 +51,10 @@ namespace Generator.Core
             }
             var content = configContent.Replace("@CONTEXT_PROPERTYS", propertys.ToString())
                  .Replace("@CONTEXT_ENTITY_CONFIG", entityConfigs.ToString())
-                 .Replace("@CONTEXT_NAME", contextName);
+                 .Replace("@CONTEXT_NAME", contextName)
+                 .Replace("@PROJECT_NAME", projectName)
+                 .Replace(".@PATH", savePath.IsNullOrWhiteSpace() ? "" : "." + savePath)
+                 .Replace("@PATH", savePath.IsNullOrWhiteSpace() ? "" : savePath);
 
             return content;
         }
