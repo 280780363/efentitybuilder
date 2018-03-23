@@ -100,8 +100,16 @@ namespace Generator.Core
             }
 
             foreach (var item in columns) {
-                if (mapper.GetType(item.ColumnDbType, item.Nullable)?.EqualsIgnoreCase("string") == true) {
+                if (item.IsIdentity) {
+                    sb.AppendLine($"\t\t\tbuilder.Property(r => r.{item.Name}).ValueGeneratedOnAdd();");
+                }
+
+                var csType = mapper.GetCsharpType(item.ColumnDbType);
+                if (csType?.TypeString?.EqualsIgnoreCase("string") == true) {
                     sb.AppendLine($"\t\t\tbuilder.Property(r => r.{item.Name}).{(item.Length.HasValue ? $"HasMaxLength({item.Length})" : "")}.IsRequired({(item.Nullable ? "false" : "true")});");
+                }
+                else if (csType?.IsValueType == false) {
+                    sb.AppendLine($"\t\t\tbuilder.Property(r => r.{item.Name}).IsRequired({(item.Nullable ? "false" : "true")});");
                 }
             }
 

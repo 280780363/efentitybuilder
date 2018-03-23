@@ -10,11 +10,11 @@ namespace Generator.Core
 {
     public class DefaultTypeMapper : ITypeMapper
     {
-        static Dictionary<string, NetType> dic = new Dictionary<string, NetType>(StringComparer.OrdinalIgnoreCase);
+        static Dictionary<string, CsharpType> dic = new Dictionary<string, CsharpType>(StringComparer.OrdinalIgnoreCase);
 
         static string lastProvider;
 
-        public string GetType(string dbType, bool nullable) {
+        public CsharpType GetCsharpType(string dbType) {
             if (lastProvider != Constant.CurrentProvider) {
                 dic.Clear();
                 lastProvider = Constant.CurrentProvider;
@@ -31,25 +31,24 @@ namespace Generator.Core
                         if (hasNullType) {
                             netType = netType.TrimEnd('?');
                         }
-                        dic.Add(dbtype, new NetType { Type = netType, HasNullType = hasNullType });
+                        dic.Add(dbtype, new CsharpType { TypeString = netType, IsValueType = hasNullType });
                     });
             }
 
             if (!dic.ContainsKey(dbType))
-                return "找不到的数据库映射类型:" + dbType + ",请先编辑类型映射文件";
+                return null;
             var type = dic[dbType];
-            if (nullable && type.HasNullType)
-                return type.Type + "?";
-
-            return type.Type;
+            return type;
         }
 
+        public string GetType(string dbType, bool nullable) {
+            var type = GetCsharpType(dbType);
+            if (nullable && type.IsValueType)
+                return type.TypeString + "?";
 
-        private class NetType
-        {
-            public string Type { get; set; }
-
-            public bool HasNullType { get; set; }
+            return type.TypeString;
         }
     }
+
+
 }
