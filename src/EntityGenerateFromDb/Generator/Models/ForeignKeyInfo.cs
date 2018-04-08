@@ -29,21 +29,27 @@ namespace Generator.Models
         public string BaseTableName { get; set; }
 
         public string BasePropertyName(All all) {
-            if (all.ForeignKeys.Count(r => r.ReferencesTableName.EqualsIgnoreCase(ReferencesTableName) && r.BaseTableName.EqualsIgnoreCase(BaseTableName)) > 1) {
-                //如果当前表有多个外键指向同一表
-                return getPrefix() + "_" + ReferencesTableName;
-            }
-            else
-                return ReferencesTableName;
+            //if (all.ForeignKeys.Count(r => r.ReferencesTableName.EqualsIgnoreCase(ReferencesTableName) && r.BaseTableName.EqualsIgnoreCase(BaseTableName)) > 1) {
+            //    //如果当前表有多个外键指向同一表
+            //    return getPrefix() + "_" + ReferencesTableName;
+            //}
+            //else
+            //    return ReferencesTableName;
+            //这种方式不利于修改
+
+            return getPrefix() + "_" + ReferencesTableName;
         }
 
         public string ReferencesPropertyName(All all) {
-            if (all.ForeignKeys.Count(r => r.ReferencesTableName.EqualsIgnoreCase(ReferencesTableName) && r.BaseTableName.EqualsIgnoreCase(BaseTableName)) > 1) {
-                //如果引用到当前表的 表有多个外键指向当前表
-                return getPrefix() + "_" + BaseTableName;
-            }
-            else
-                return BaseTableName;
+            //if (all.ForeignKeys.Count(r => r.ReferencesTableName.EqualsIgnoreCase(ReferencesTableName) && r.BaseTableName.EqualsIgnoreCase(BaseTableName)) > 1) {
+            //    //如果引用到当前表的 表有多个外键指向当前表
+            //    return getPrefix() + "_" + BaseTableName;
+            //}
+            //else
+            //    return BaseTableName;
+            //这种方式不利于修改
+
+            return getPrefix() + "_" + BaseTableName;
         }
 
         private string getPrefix() {
