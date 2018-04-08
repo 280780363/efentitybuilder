@@ -39,6 +39,8 @@ namespace Generator
                     txtSavePath.Text = LastDataConfiguration.Instance.Get("SavePath");
                 if (!LastDataConfiguration.Instance.Get("ContextPrefix").IsNullOrWhiteSpace())
                     txtContextPrefix.Text = LastDataConfiguration.Instance.Get("ContextPrefix");
+                if (!LastDataConfiguration.Instance.Get("IsGenerateContext").IsNullOrWhiteSpace())
+                    cbxGenerateContext.Checked = LastDataConfiguration.Instance.Get("IsGenerateContext") == "true";
             }
         }
 
@@ -116,38 +118,38 @@ namespace Generator
 
                 #endregion
 
+
                 #region dbcontext创建
 
-                string contextName = txtContextPrefix.Text + "DbContext";
+                if (cbxGenerateContext.Checked) {
+                    string contextName = txtContextPrefix.Text + "DbContext";
 
+                    string contextClassContent = generator.GenrateContext(checkedTables, contextName, selectedProject.ProjectName, path);
+                    try {
+                        var fileFullName = Path.Combine(saveDir, contextName + ".cs");
+                        await ShowBuildMsgAsync($"正在为您创建:\"{contextName}.cs\"");
 
+                        if (!File.Exists(fileFullName)) {
+                            var fileTempFullName = Path.Combine(generatorTempDir, contextName + ".cs");
 
-                string contextClassContent = generator.GenrateContext(checkedTables, contextName, selectedProject.ProjectName, path);
-                try {
-                    var fileFullName = Path.Combine(saveDir, contextName + ".cs");
-                    await ShowBuildMsgAsync($"正在为您创建:\"{contextName}.cs\"");
+                            File.WriteAllText(fileTempFullName, contextClassContent, Encoding.UTF8);
 
-                    if (!File.Exists(fileFullName)) {
-                        var fileTempFullName = Path.Combine(generatorTempDir, contextName + ".cs");
+                            if (lastItem != null)
+                                lastItem.AddFilesToProject(fileTempFullName);
+                            else
+                                this.selectedProject.ProjectDte.AddFilesToProject(fileTempFullName);
+                            selectedProject.ProjectDte.Save();
 
-                        File.WriteAllText(fileTempFullName, contextClassContent, Encoding.UTF8);
-
-                        if (lastItem != null)
-                            lastItem.AddFilesToProject(fileTempFullName);
-                        else
-                            this.selectedProject.ProjectDte.AddFilesToProject(fileTempFullName);
-                        selectedProject.ProjectDte.Save();
-
-                        File.Delete(fileTempFullName);
+                            File.Delete(fileTempFullName);
+                        }
+                        else {
+                            File.WriteAllText(fileFullName, contextClassContent, Encoding.UTF8);
+                        }
                     }
-                    else {
-                        File.WriteAllText(fileFullName, contextClassContent, Encoding.UTF8);
+                    catch (Exception ex) {
+                        await ShowBuildMsgAsync($"创建DbContext文件[{contextName}.cs]出现错误:{JsonHelper.ToJson(ex)}");
                     }
                 }
-                catch (Exception ex) {
-                    await ShowBuildMsgAsync($"创建DbContext文件[{contextName}.cs]出现错误:{JsonHelper.ToJson(ex)}");
-                }
-
 
                 #endregion
 
@@ -155,6 +157,7 @@ namespace Generator
                     Directory.Delete(generatorTempDir, true);
                 LastDataConfiguration.Instance.Set("SavePath", txtSavePath.Text);
                 LastDataConfiguration.Instance.Set("ContextPrefix", txtContextPrefix.Text);
+                LastDataConfiguration.Instance.Set("IsGenerateContext", cbxGenerateContext.Checked ? "true" : "false");
                 LastDataConfiguration.Instance.Save();
 
                 await ShowBuildMsgAsync("已为您创建完成!");
@@ -186,6 +189,15 @@ namespace Generator
 
         private void 编辑查询语句ToolStripMenuItem_Click(object sender, EventArgs e) {
             System.Diagnostics.Process.Start("notepad.exe", Constant.CurrentProviderQueryFile);
+        }
+
+        private void cbxGenerateContext_CheckedChanged(object sender, EventArgs e) {
+            txtContextPrefix.ReadOnly = cbxGenerateContext.Checked;
+            if (cbxGenerateContext.Checked)
+                txtContextPrefix.Text = "";
+            else {
+                txtContextPrefix.Text = LastDataConfiguration.Instance.Get("ContextPrefix");
+            }
         }
     }
 }

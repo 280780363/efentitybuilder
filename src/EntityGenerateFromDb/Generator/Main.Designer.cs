@@ -25,6 +25,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.cbxlTables = new System.Windows.Forms.CheckedListBox();
             this.cbxAll = new System.Windows.Forms.CheckBox();
             this.txtLog = new System.Windows.Forms.RichTextBox();
@@ -40,6 +41,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtContextPrefix = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.cbxGenerateContext = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,7 +140,7 @@
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(367, 30);
+            this.btnGenerate.Location = new System.Drawing.Point(367, 29);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(76, 48);
             this.btnGenerate.TabIndex = 6;
@@ -149,7 +151,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 60);
+            this.label2.Location = new System.Drawing.Point(41, 59);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 12);
             this.label2.TabIndex = 4;
@@ -157,7 +159,7 @@
             // 
             // txtContextPrefix
             // 
-            this.txtContextPrefix.Location = new System.Drawing.Point(82, 57);
+            this.txtContextPrefix.Location = new System.Drawing.Point(113, 56);
             this.txtContextPrefix.Name = "txtContextPrefix";
             this.txtContextPrefix.Size = new System.Drawing.Size(124, 21);
             this.txtContextPrefix.TabIndex = 5;
@@ -167,11 +169,23 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(205, 61);
+            this.label3.Location = new System.Drawing.Point(236, 60);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 4;
             this.label3.Text = "DbContext";
+            // 
+            // cbxGenerateContext
+            // 
+            this.cbxGenerateContext.AutoSize = true;
+            this.cbxGenerateContext.Checked = true;
+            this.cbxGenerateContext.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbxGenerateContext.Location = new System.Drawing.Point(25, 58);
+            this.cbxGenerateContext.Name = "cbxGenerateContext";
+            this.cbxGenerateContext.Size = new System.Drawing.Size(15, 14);
+            this.cbxGenerateContext.TabIndex = 1;
+            this.cbxGenerateContext.UseVisualStyleBackColor = true;
+            this.cbxGenerateContext.CheckedChanged += new System.EventHandler(this.cbxGenerateContext_CheckedChanged);
             // 
             // Main
             // 
@@ -185,10 +199,12 @@
             this.Controls.Add(this.txtSavePath);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtLog);
+            this.Controls.Add(this.cbxGenerateContext);
             this.Controls.Add(this.cbxAll);
             this.Controls.Add(this.cbxlTables);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -218,5 +234,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtContextPrefix;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox cbxGenerateContext;
     }
 }
