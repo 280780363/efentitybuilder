@@ -38,7 +38,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtSavePath = new System.Windows.Forms.TextBox();
             this.btnGenerate = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.txtContextPrefix = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cbxGenerateContext = new System.Windows.Forms.CheckBox();
@@ -148,18 +147,9 @@
             this.btnGenerate.UseVisualStyleBackColor = true;
             this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(41, 59);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 12);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Context名称";
-            // 
             // txtContextPrefix
             // 
-            this.txtContextPrefix.Location = new System.Drawing.Point(113, 56);
+            this.txtContextPrefix.Location = new System.Drawing.Point(176, 56);
             this.txtContextPrefix.Name = "txtContextPrefix";
             this.txtContextPrefix.Size = new System.Drawing.Size(124, 21);
             this.txtContextPrefix.TabIndex = 5;
@@ -169,7 +159,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(236, 60);
+            this.label3.Location = new System.Drawing.Point(299, 60);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 12);
             this.label3.TabIndex = 4;
@@ -182,8 +172,9 @@
             this.cbxGenerateContext.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbxGenerateContext.Location = new System.Drawing.Point(25, 58);
             this.cbxGenerateContext.Name = "cbxGenerateContext";
-            this.cbxGenerateContext.Size = new System.Drawing.Size(15, 14);
+            this.cbxGenerateContext.Size = new System.Drawing.Size(102, 16);
             this.cbxGenerateContext.TabIndex = 1;
+            this.cbxGenerateContext.Text = "创建DbContext";
             this.cbxGenerateContext.UseVisualStyleBackColor = true;
             this.cbxGenerateContext.CheckedChanged += new System.EventHandler(this.cbxGenerateContext_CheckedChanged);
             // 
@@ -195,7 +186,6 @@
             this.Controls.Add(this.btnGenerate);
             this.Controls.Add(this.txtContextPrefix);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtSavePath);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtLog);
@@ -231,7 +221,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtSavePath;
         private System.Windows.Forms.Button btnGenerate;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtContextPrefix;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox cbxGenerateContext;

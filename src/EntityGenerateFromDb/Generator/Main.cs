@@ -40,7 +40,7 @@ namespace Generator
                 if (!LastDataConfiguration.Instance.Get("ContextPrefix").IsNullOrWhiteSpace())
                     txtContextPrefix.Text = LastDataConfiguration.Instance.Get("ContextPrefix");
                 if (!LastDataConfiguration.Instance.Get("IsGenerateContext").IsNullOrWhiteSpace())
-                    cbxGenerateContext.Checked = LastDataConfiguration.Instance.Get("IsGenerateContext") == "true";
+                    cbxGenerateContext.Checked = (LastDataConfiguration.Instance.Get("IsGenerateContext") ?? "true") == "true";
             }
         }
 
@@ -192,12 +192,7 @@ namespace Generator
         }
 
         private void cbxGenerateContext_CheckedChanged(object sender, EventArgs e) {
-            txtContextPrefix.ReadOnly = cbxGenerateContext.Checked;
-            if (cbxGenerateContext.Checked)
-                txtContextPrefix.Text = "";
-            else {
-                txtContextPrefix.Text = LastDataConfiguration.Instance.Get("ContextPrefix");
-            }
+            txtContextPrefix.ReadOnly = !cbxGenerateContext.Checked;
         }
     }
 }
